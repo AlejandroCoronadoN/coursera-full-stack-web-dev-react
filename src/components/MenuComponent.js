@@ -1,19 +1,11 @@
 import React, {Component} from 'react';
-import {Media} from 'reactstrap';
-import {Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle} from 'reactstrap';
+import {Card, CardImg, CardImgOverlay,CardTitle} from 'reactstrap';
 import Dishdetail from './DishdetailComponent';
 class Menu extends Component{
+
   constructor(props) {
     super(props);
-
-    this.state = {
-        selectedDish: null
-    }
-}
-
-onDishSelect(dish) {
-    this.setState({ selectedDish: dish});
-}
+  }
 
   
   //? Whenever you create a list of items in react each item requires an ID
@@ -25,14 +17,14 @@ onDishSelect(dish) {
     const menu= this.props.dishes.map((dish) => {
       return (
         <div key={dish.id} class="col-12 col-md-5 m-1">
-          <Card onClick ={() => this.onDishSelect(dish) } > 
+          <Card onClick={()=> this.props.onClick(dish.id) }> 
             <CardImg widht='100%' src={dish.image} alt={dish.name}/>
             <CardImgOverlay body className="ml-5">
               <CardTitle heading>{dish.name}</CardTitle>
             </CardImgOverlay>
           </Card>
         </div>
-        );
+      );
     });
 
     return(
@@ -40,11 +32,9 @@ onDishSelect(dish) {
         <div class="row">
             {menu}
         </div>
-        <Dishdetail selectedDish = {this.state.selectedDish}/>
       </div>
     );
 
-  
   }
 };
 
