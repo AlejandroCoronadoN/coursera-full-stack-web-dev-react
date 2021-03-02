@@ -1,11 +1,15 @@
 import React, { Component } from "react";
+import Home from './HomeComponent';
 import Menu from './MenuComponent';
 import {DISHES} from '../shared/dishes';
 import Dishdetail from './DishdetailComponent';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
+import {Switch, Route, Redirect} from 'react-router-dom';
 class Main extends Component {
   /*? App is called  by index.html as part of the DOM*/
+
+
   constructor(props){
     super('props');
     this.state = {
@@ -14,19 +18,23 @@ class Main extends Component {
     };
   }
   
-  onDishSelect(dishId) {
-    this.setState({ selectedDish: dishId});
-  }
 
-
+  //? Note that while using Route we need to pass the Menu component as JS function in order to pass props to the component.
+  //? Everything that doesnt match the route will be redirected to home
   render() {
+    const HomePage = () =>{
+      return(
+        <Home></Home>
+      );
+    }
     return (
       <div>
         <Header></Header>
-        <Menu dishes = {this.state.dishes}
-          onClick ={(dishId) => this.onDishSelect(dishId)} />
-        <Dishdetail 
-          dish={this.state.dishes.filter((dish)=> dish.id === this.state.selectedDish)[0]} /> 
+          <Switch>
+            <Route path='/home' component={HomePage}>Home</Route> 
+            <Route exact path='/menu' component={() => <Menu dishes={this.state.dishes}/>}></Route> 
+            <Redirect to='/home'></Redirect>        
+          </Switch>
         <Footer></Footer>
 
       </div>
