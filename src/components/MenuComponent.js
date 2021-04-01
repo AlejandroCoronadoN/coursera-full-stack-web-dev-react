@@ -8,6 +8,7 @@ import {
   BreadcrumbItem,
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import {Loading} from './LoadingComponent';
 
 function RenderMenuItem ({dish, onClick}) {
   return (
@@ -27,7 +28,7 @@ function RenderMenuItem ({dish, onClick}) {
 //? Stores properties related to this component that we can use
 
 const Menu = (props) => {
-  const menu = props.dishes.map((dish) => {
+  const menu = props.dishes.dishes.map((dish) => {
     //? Note that we dont need any longer this.props since there is no object in thes component
     return (
       <div key={dish.id} class="col-12 col-md-5">
@@ -36,21 +37,40 @@ const Menu = (props) => {
     );
   });
 
-  return (
-    <div class="container">
-      <div className="row">
-        <Breadcrumb>
-          <BreadcrumbItem><Link to="/home">Home</Link></BreadcrumbItem>
-          <BreadcrumbItem active>Menu</BreadcrumbItem>
-        </Breadcrumb>
-        <div className="col-12">
-          <h3 className="">Menu</h3>
-          <hr/>
+  if (props.dishes.isLoading){
+    return(
+      <div class="container">
+        <div class="row">
+          <Loading></Loading>
         </div>
       </div>
-      <div class="row">{menu}</div>
-    </div>
-  );
+    )
+  }
+  else if (props.dishes.errMess){
+    return(
+      <div class="container">
+        <div class="row">
+          <h4>{props.dishes.errMess}</h4>
+        </div>
+      </div>
+    )
+  }
+  else
+    return (
+      <div class="container">
+        <div className="row">
+          <Breadcrumb>
+            <BreadcrumbItem><Link to="/home">Home</Link></BreadcrumbItem>
+            <BreadcrumbItem active>Menu</BreadcrumbItem>
+          </Breadcrumb>
+          <div className="col-12">
+            <h3 className="">Menu</h3>
+            <hr/>
+          </div>
+        </div>
+        <div class="row">{menu}</div>
+      </div>
+    );
 };
 
 export default Menu;

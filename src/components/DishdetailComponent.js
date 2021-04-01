@@ -10,7 +10,7 @@ import { Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbIte
   ModalBody,
   ModalHeader
 } from "reactstrap";
-
+import {Loading} from './LoadingComponent'; 
 
 
 const required = (val) => val && val.length;
@@ -32,9 +32,8 @@ class CommentForm extends Component {
   }
 
   handleSubmit(values){
-    console.log("Current state: " + JSON.stringify(values));
-    alert("Current state: " +JSON.stringify(values));
-
+    this.props.addComment(this.props.dishId, values.rating, values.firstname, values.message);
+    
   }
 
   toggleModal() {
@@ -56,7 +55,6 @@ class CommentForm extends Component {
           <ModalBody>
 
             <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
-
 
             <Row className='form-group'>
               <Col md={12}>
@@ -151,7 +149,7 @@ class CommentForm extends Component {
 }
 
 
-function RenderComments({ comments }) {
+function RenderComments({ comments, addComment, dishId }) {
     console.log("comments: ", comments);
     const menucomment = comments.map((comment) => {
       return (
@@ -174,7 +172,7 @@ function RenderComments({ comments }) {
       <div className="col-12 col-md-5">
         <b>Comments</b>
         <ul className="list-unstyled">{menucomment}</ul>
-      <CommentForm></CommentForm>
+      <CommentForm dishId ={dishId} addComment ={addComment}/>
       </div>
     );
 
@@ -195,7 +193,25 @@ function RenderDish({ dish }) {
 }
 
 const Dishdetail = (props) => {
-  if (props.dish != null) {
+  if (props.isLoading){
+    return(
+      <div class="container">
+        <div class="row">
+          <Loading></Loading>
+        </div>
+      </div>
+    )
+  }
+  else if (props.errMess){
+    return(
+      <div class="container">
+        <div class="row">
+          <h4>{props.errMess}</h4>
+        </div>
+      </div>
+    )
+  }
+  else if (props.dish != null) {
   return (
     <div class="container">
       <div className="row">
@@ -211,7 +227,9 @@ const Dishdetail = (props) => {
       
       <div className="row">
         <RenderDish dish={props.dish} />
-        <RenderComments comments={props.comments} />
+        <RenderComments comments={props.comments} 
+          addComment={props.addComment}
+          dishId={props.dish.id}/>
       </div>
 
     </div>
