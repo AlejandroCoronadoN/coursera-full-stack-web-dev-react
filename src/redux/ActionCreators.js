@@ -96,7 +96,6 @@ export const addDishes = (dishes) => ({
 
 //!------------------COMMENTS----------------------
 export const fetchComments = () => (dispatch) => {
-  dispatch(dishesLoading(true));
 
   return fetch(baseUrl + "comments")
     .then(response => {
