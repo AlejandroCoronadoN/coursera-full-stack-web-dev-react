@@ -33,7 +33,7 @@ class CommentForm extends Component {
   }
 
   handleSubmit(values){
-    this.props.addComment(this.props.dishId, values.rating, values.firstname, values.message);
+    this.props.postComment(this.props.dishId, values.rating, values.firstname, values.message);
     
   }
 
@@ -114,10 +114,9 @@ class CommentForm extends Component {
                     id="message" 
                     placeholder ='...'
                     rows="6"
-                    
                     //value = {this.state.message}
                     //onChange={this.handleInputChange}
-                    
+                    postComment
                 ></Control.textarea>
 
 
@@ -150,7 +149,7 @@ class CommentForm extends Component {
 }
 
 
-function RenderComments({ comments, addComment, dishId }) {
+function RenderComments({ comments, postComment, dishId }) {
     console.log("comments: ", comments);
     const menucomment = comments.map((comment) => {
       return (
@@ -173,7 +172,7 @@ function RenderComments({ comments, addComment, dishId }) {
       <div className="col-12 col-md-5">
         <b>Comments</b>
         <ul className="list-unstyled">{menucomment}</ul>
-      <CommentForm dishId ={dishId} addComment ={addComment}/>
+      <CommentForm dishId ={dishId} postComment ={postComment}/>
       </div>
     );
 
@@ -229,7 +228,7 @@ const Dishdetail = (props) => {
       <div className="row">
         <RenderDish dish={props.dish} />
         <RenderComments comments={props.comments} 
-          addComment={props.addComment}
+          postComment={props.postComment}
           dishId={props.dish.id}/>
       </div>
 

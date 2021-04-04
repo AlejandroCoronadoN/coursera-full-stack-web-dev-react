@@ -14,8 +14,8 @@ export const Comments = (state = {
       case ActionTypes.ADD_COMMENT:
           var comment = action.payload;
           //console.log('comments.js: ' + comment);
-          comment.id = state.comments.length;
-          comment.date = new Date().toISOString();
+          //? comment.id = state.comments.length; <- AUTOMATICALLY CREATED NOW BY THE SERVER
+          //comment.date = new Date().toISOString();
           //console.log("Comment: ", comment);
           return {...state, comments: state.comments.concat(comment)};
 
