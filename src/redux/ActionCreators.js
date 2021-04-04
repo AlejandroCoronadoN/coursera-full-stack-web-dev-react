@@ -20,9 +20,25 @@ export const fetchDishes = () => (dispatch) => {
   dispatch(dishesLoading(true));
 
   return fetch(baseUrl + "dishes")
+    .then(response => {
+      if(response.ok){
+        return response;
+      }
+      else{ //! First part handles errors when the response from the server is an error
+        var error = new Error('Error: ' + response.status + ': ' + response.statusText);
+        error.response = response;
+        throw error;
+      }
+    }, 
+    error => { //! Second part handles errors when you don't get ant response from the server
+      var errmess = new Error(error.message);
+      throw errmess;
+    })
     .then((response) => response.json()) //? Convert the response into json
-    .then((dishes) => dispatch(addDishes(dishes)));
-};
+    .then((dishes) => dispatch(addDishes(dishes)))
+    .catch( error => dispatch(dishesFailed(error.message)));
+
+  };
 
 
 export const dishesLoading = () => ({
@@ -45,8 +61,24 @@ export const fetchComments = () => (dispatch) => {
   dispatch(dishesLoading(true));
 
   return fetch(baseUrl + "comments")
+    .then(response => {
+      if(response.ok){
+        return response;
+      }
+      else{ //! First part handles errors when the response from the server is an error
+        var error = new Error('Error: ' + response.status + ': ' + response.statusText);
+        error.response = response;
+        throw error;
+      }
+    }, 
+    error => { //! Second part handles errors when you don't get ant response from the server
+      var errmess = new Error(error.message);
+      throw errmess;
+    })
+
     .then((response) => response.json()) //? Convert the response into json
-    .then((comments) => dispatch(addComments(comments)));
+    .then((comments) => dispatch(addComments(comments)))
+    .catch( error => dispatch(commentsFailed(error.message)));
 };
 
 export const commentsFailed = (errmess) => ({
@@ -64,8 +96,24 @@ export const fetchPromos = () => (dispatch) => {
   dispatch(promosLoading(true));
 
   return fetch(baseUrl + "promotions")
+    .then(response => {
+      if(response.ok){
+        return response;
+      }
+      else{ //! First part handles errors when the response from the server is an error
+        var error = new Error('Error: ' + response.status + ': ' + response.statusText);
+        error.response = response;
+        throw error;
+      }
+    }, 
+    error => { //! Second part handles errors when you don't get ant response from the server
+      var errmess = new Error(error.message);
+      throw errmess;
+    })
     .then((response) => response.json()) //? Convert the response into json
-    .then((promos) => dispatch(addPromos(promos)));
+    .then((promos) => dispatch(addPromos(promos)))
+    .catch( error => dispatch(promosFailed(error.message)));
+
 };
 
 
