@@ -1,40 +1,85 @@
-import * as ActionTypes from './ActionTypes';
-import { DISHES } from '../shared/dishes';
+import * as ActionTypes from "./ActionTypes";
+import { baseUrl } from "../shared/baseUrl";
 
 export const addComment = (dishId, rating, author, comment) => ({
-    type: ActionTypes.ADD_COMMENT,
-    payload: {
-        dishId: dishId,
-        rating: rating,
-        author: author,
-        comment: comment
-    }
+  type: ActionTypes.ADD_COMMENT,
+  payload: {
+    dishId: dishId,
+    rating: rating,
+    author: author,
+    comment: comment,
+  },
 });
 
-export const fetchDishes = ()=> (dispatch) => {
-  // fetchDishes is a thunk that is going to call dispatch on several times 
+//!----------------------------DISHES--------------------------------
+export const fetchDishes = () => (dispatch) => {
+  // fetchDishes is a thunk that is going to call dispatch on several times
   // example const add = (x, y) => x + y ::: const add = x => y => x + y
   // we could also use getstate or dispatch
 
   dispatch(dishesLoading(true));
 
-  setTimeout(() => {
-    dispatch(addDishes(DISHES))
-  }, 2000 );
+  return fetch(baseUrl + "dishes")
+    .then((response) => response.json()) //? Convert the response into json
+    .then((dishes) => dispatch(addDishes(dishes)));
+};
 
-}
 
 export const dishesLoading = () => ({
-  type: ActionTypes.DISHES_LOADING
+  type: ActionTypes.DISHES_LOADING,
   //We are telling someone to wait for the dishes to be load
 });
 
 export const dishesFailed = (errmess) => ({
   type: ActionTypes.DISHES_FAILED,
-  payload: errmess
+  payload: errmess,
 });
 
 export const addDishes = (dishes) => ({
   type: ActionTypes.ADD_DISHES,
-  payload: dishes
+  payload: dishes,
+});
+
+//!------------------COMMENTS----------------------
+export const fetchComments = () => (dispatch) => {
+  dispatch(dishesLoading(true));
+
+  return fetch(baseUrl + "comments")
+    .then((response) => response.json()) //? Convert the response into json
+    .then((comments) => dispatch(addComments(comments)));
+};
+
+export const commentsFailed = (errmess) => ({
+  type: ActionTypes.COMMENTS_FAILED,
+  payload: errmess,
+});
+
+export const addComments = (comments) => ({
+  type: ActionTypes.ADD_COMMENTS,
+  payload: comments,
+});
+
+//!----------------------------PROMOS--------------------------------
+export const fetchPromos = () => (dispatch) => {
+  dispatch(promosLoading(true));
+
+  return fetch(baseUrl + "promotions")
+    .then((response) => response.json()) //? Convert the response into json
+    .then((promos) => dispatch(addPromos(promos)));
+};
+
+
+export const promosLoading = () => ({
+  type: ActionTypes.PROMOS_LOADING,
+  //We are telling someone to wait for the dishes to be load
+});
+
+export const promosFailed = (errmess) => ({
+  type: ActionTypes.PROMOS_FAILED,
+  payload: errmess,
+});
+
+export const addPromos = (promos) => ({
+  type: ActionTypes.ADD_PROMOS,
+  payload: promos,
 });

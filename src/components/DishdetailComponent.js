@@ -11,6 +11,7 @@ import { Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbIte
   ModalHeader
 } from "reactstrap";
 import {Loading} from './LoadingComponent'; 
+import {baseUrl} from '../shared/baseUrl';
 
 
 const required = (val) => val && val.length;
@@ -182,7 +183,7 @@ function RenderDish({ dish }) {
   console.log("DISH renderDish: ", dish);
     return (
         <Card className="col-12 col-md-5">
-          <CardImg widht="100%" src={dish.image} alt={dish.name} />
+          <CardImg widht="100%" src={baseUrl + dish.image} alt={dish.name} />
           <CardBody>
             <CardTitle>{dish.name}</CardTitle>
             <CardText>{dish.description}</CardText>
